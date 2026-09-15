@@ -30,9 +30,6 @@ using namespace std;
 
 const int MAX_PLATILLOS = 20;
 
-// ---------------------------------------------------------
-// Prototipos de funciones (ademas de main)
-// ---------------------------------------------------------
 void mostrarMenu();
 int leerEnteroValido(const string& mensaje, int minVal, int maxVal);
 float leerFloatValido(const string& mensaje, float minVal, float maxVal);
