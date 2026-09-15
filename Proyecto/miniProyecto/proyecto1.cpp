@@ -1,10 +1,8 @@
 /*
-    ============================================================
     SABOR NOMADA - Sistema de gestion de un Food Truck
     ------------------------------------------------------------
     Mini-Proyecto Integrador C++ | Bootcamp Programacion Cero a POO
-    Autor: (tu nombre aqui)
-    ============================================================
+    Autor: Andrés Guachamín
 
     Idea del proyecto:
     Un food truck ambulante necesita llevar el control de su menu
@@ -15,16 +13,16 @@
     El sistema arma al azar un combo de 2 platillos distintos,
     le aplica un 10% de descuento, evalua si el combo resultante
     es "extremo" (muy picante) o "equilibrado", y ademas registra
-    la venta real de ese combo (incrementa las unidades vendidas
-    de ambos platillos), lo cual despues se refleja en el reporte
+    la venta real de ese combo incrementa las unidades vendidas
+    de ambos platillos, lo cual despues se refleja en el reporte
     general. No es solo un mensaje decorativo: modifica los datos.
 */
 
 #include <iostream>
 #include <string>
-#include <cstdlib>   // rand, srand
-#include <ctime>     // time
-#include <iomanip>   // setprecision
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
 
 using namespace std;
 
@@ -45,25 +43,25 @@ void mostrarReporte(const string nombres[], const float precios[],
 void comboSorpresa(string nombres[], float precios[], int picantes[],
                     int vendidos[], int total);
 
-// ---------------------------------------------------------
-// main
-// ---------------------------------------------------------
-int main() {
+int main() 
+{
     string nombres[MAX_PLATILLOS];
     float precios[MAX_PLATILLOS];
-    int picantes[MAX_PLATILLOS];   // nivel de 1 (suave) a 5 (extremo)
-    int vendidos[MAX_PLATILLOS];   // unidades vendidas
+    int picantes[MAX_PLATILLOS];
+    int vendidos[MAX_PLATILLOS];
     int totalRegistros = 0;
 
-    srand(static_cast<unsigned int>(time(0))); // semilla para el combo aleatorio
+    srand(static_cast<unsigned int>(time(0)));
 
     int opcion;
-    do {
+    do 
+    {
         mostrarMenu();
         opcion = leerEnteroValido("Elige una opcion: ", 1, 6);
         cout << endl;
 
-        switch (opcion) {
+        switch (opcion) 
+        {
             case 1:
                 registrarPlatillo(nombres, precios, picantes, vendidos, totalRegistros);
                 break;
@@ -81,9 +79,13 @@ int main() {
                     cout << "  Precio    : $" << precios[idx] << "\n";
                     cout << "  Picante   : " << picantes[idx] << "/5\n";
                     cout << "  Vendidos  : " << vendidos[idx] << " unidades\n";
-                } else if (totalRegistros == 0) {
+                } 
+                else if (totalRegistros == 0) 
+                {
                     cout << "Todavia no hay platillos registrados.\n";
-                } else {
+                } 
+                else 
+                {
                     cout << "No se encontro ningun platillo con ese nombre.\n";
                 }
                 break;
@@ -107,54 +109,54 @@ int main() {
 
     return 0;
 }
-
-// ---------------------------------------------------------
-// Muestra el menu principal
-// ---------------------------------------------------------
-void mostrarMenu() {
-    cout << "==========================================\n";
-    cout << "        FOOD TRUCK  -  SABOR NOMADA\n";
-    cout << "==========================================\n";
-    cout << "1. Registrar un platillo\n";
-    cout << "2. Mostrar todos los platillos\n";
-    cout << "3. Buscar un platillo\n";
-    cout << "4. Mostrar reporte general\n";
-    cout << "5. Combo Sorpresa del Dia (creativo)\n";
-    cout << "6. Salir\n";
-    cout << "------------------------------------------\n";
+void mostrarMenu() 
+{
+    cout << "==========================================";
+    cout << "        FOOD TRUCK  -  SABOR NOMADA";
+    cout << "==========================================";
+    cout << "        FOOD TRUCK  -  SABOR NOMADA";
+    cout << "==========================================";
+    cout << "1. Registrar un platillo";
+    cout << "2. Mostrar todos los platillos";
+    cout << "3. Buscar un platillo";
+    cout << "4. Mostrar reporte general";
+    cout << "5. Combo Sorpresa del Dia (creativo)";
+    cout << "6. Salir";
+    cout << "------------------------------------------";
 }
 
-// ---------------------------------------------------------
-// Lee un entero validando que este dentro de un rango.
-// Controla tambien entradas no numericas (casos borde).
-// ---------------------------------------------------------
 int leerEnteroValido(const string& mensaje, int minVal, int maxVal) {
     int valor;
     bool valido = false;
 
-    do {
+    do 
+    {
         cout << mensaje;
         cin >> valor;
 
-        if (cin.fail()) {
+        if (cin.fail()) 
+        {
             cin.clear();
             cin.ignore(1000, '\n');
             cout << "Entrada invalida. Debes ingresar un numero entero.\n";
-        } else if (valor < minVal || valor > maxVal) {
+        } 
+        else if (valor < minVal || valor > maxVal) 
+        {
             cout << "El valor debe estar entre " << minVal << " y " << maxVal << ".\n";
-        } else {
+        } 
+        else 
+        {
             valido = true;
         }
-    } while (!valido);
+    } 
+    while (!valido);
 
-    cin.ignore(1000, '\n'); // limpia el salto de linea pendiente
+    cin.ignore(1000, '\n');
     return valor;
 }
 
-// ---------------------------------------------------------
-// Lee un float validando que este dentro de un rango.
-// ---------------------------------------------------------
-float leerFloatValido(const string& mensaje, float minVal, float maxVal) {
+float leerFloatValido(const string& mensaje, float minVal, float maxVal) 
+{
     float valor;
     bool valido = false;
 
@@ -162,39 +164,41 @@ float leerFloatValido(const string& mensaje, float minVal, float maxVal) {
         cout << mensaje;
         cin >> valor;
 
-        if (cin.fail()) {
+        if (cin.fail()) 
+        {
             cin.clear();
             cin.ignore(1000, '\n');
             cout << "Entrada invalida. Debes ingresar un numero.\n";
-        } else if (valor < minVal || valor > maxVal) {
+        } 
+        else if (valor < minVal || valor > maxVal) 
+        {
             cout << "El valor debe estar entre " << minVal << " y " << maxVal << ".\n";
-        } else {
+        } 
+        else 
+        {
             valido = true;
         }
-    } while (!valido);
+    } 
+    while (!valido);
 
     cin.ignore(1000, '\n');
     return valor;
 }
 
-// ---------------------------------------------------------
-// Convierte un string a minusculas (ayuda para buscar sin
-// importar mayusculas/minusculas)
-// ---------------------------------------------------------
-string aMinusculas(const string& texto) {
+string aMinusculas(const string& texto) 
+{
     string resultado = texto;
-    for (size_t i = 0; i < resultado.size(); i++) {
+    for (size_t i = 0; i < resultado.size(); i++) 
+    {
         resultado[i] = tolower(resultado[i]);
     }
     return resultado;
 }
 
-// ---------------------------------------------------------
-// Registra un nuevo platillo (respeta el limite maximo)
-// ---------------------------------------------------------
 void registrarPlatillo(string nombres[], float precios[], int picantes[],
                         int vendidos[], int &total) {
-    if (total >= MAX_PLATILLOS) {
+    if (total >= MAX_PLATILLOS) 
+    {
         cout << "No se pueden registrar mas platillos. Limite de "
              << MAX_PLATILLOS << " alcanzado.\n";
         return;
@@ -211,26 +215,26 @@ void registrarPlatillo(string nombres[], float precios[], int picantes[],
     nombres[total] = nombre;
     precios[total] = precio;
     picantes[total] = picante;
-    vendidos[total] = 0; // un platillo nuevo inicia sin ventas
+    vendidos[total] = 0;
 
     total++;
     cout << "Platillo \"" << nombre << "\" registrado con exito. ("
          << total << "/" << MAX_PLATILLOS << ")\n";
 }
 
-// ---------------------------------------------------------
-// Muestra todos los platillos registrados
-// ---------------------------------------------------------
 void mostrarPlatillos(const string nombres[], const float precios[],
-                       const int picantes[], const int vendidos[], int total) {
-    if (total == 0) {
+                       const int picantes[], const int vendidos[], int total) 
+                       {
+    if (total == 0) 
+    {
         cout << "Aun no hay platillos en el menu del food truck.\n";
         return;
     }
 
     cout << fixed << setprecision(2);
     cout << "--- Menu actual (" << total << " platillos) ---\n";
-    for (int i = 0; i < total; i++) {
+    for (int i = 0; i < total; i++) 
+    {
         cout << (i + 1) << ". " << nombres[i]
              << " | $" << precios[i]
              << " | Picante: " << picantes[i] << "/5"
@@ -238,11 +242,8 @@ void mostrarPlatillos(const string nombres[], const float precios[],
     }
 }
 
-// ---------------------------------------------------------
-// Busqueda secuencial de un platillo por nombre
-// Retorna el indice si lo encuentra, -1 si no.
-// ---------------------------------------------------------
-int buscarPlatillo(const string nombres[], int total) {
+int buscarPlatillo(const string nombres[], int total) 
+{
     if (total == 0) return -1;
 
     cout << "Nombre del platillo a buscar: ";
@@ -250,20 +251,20 @@ int buscarPlatillo(const string nombres[], int total) {
     getline(cin, busqueda);
     string busquedaMin = aMinusculas(busqueda);
 
-    for (int i = 0; i < total; i++) {
-        if (aMinusculas(nombres[i]) == busquedaMin) {
+    for (int i = 0; i < total; i++) 
+    {
+        if (aMinusculas(nombres[i]) == busquedaMin) 
+        {
             return i;
         }
     }
     return -1;
 }
 
-// ---------------------------------------------------------
-// Reporte general: al menos dos calculos sobre los datos
-// ---------------------------------------------------------
 void mostrarReporte(const string nombres[], const float precios[],
                      const int vendidos[], int total) {
-    if (total == 0) {
+    if (total == 0) 
+    {
         cout << "No hay datos suficientes para generar un reporte.\n";
         return;
     }
@@ -272,10 +273,12 @@ void mostrarReporte(const string nombres[], const float precios[],
     float ingresosTotales = 0.0f;
     int indiceMasVendido = 0;
 
-    for (int i = 0; i < total; i++) {
+    for (int i = 0; i < total; i++) 
+    {
         sumaPrecios += precios[i];
         ingresosTotales += precios[i] * vendidos[i];
-        if (vendidos[i] > vendidos[indiceMasVendido]) {
+        if (vendidos[i] > vendidos[indiceMasVendido]) 
+        {
             indiceMasVendido = i;
         }
     }
@@ -288,35 +291,36 @@ void mostrarReporte(const string nombres[], const float precios[],
     cout << "Precio promedio       : $" << precioPromedio << "\n";
     cout << "Ingresos totales est. : $" << ingresosTotales << "\n";
 
-    if (vendidos[indiceMasVendido] > 0) {
+    if (vendidos[indiceMasVendido] > 0) 
+    {
         cout << "Platillo mas vendido  : " << nombres[indiceMasVendido]
              << " (" << vendidos[indiceMasVendido] << " unidades)\n";
-    } else {
+    } 
+    else 
+    {
         cout << "Platillo mas vendido  : aun no se registran ventas.\n";
     }
 }
 
-// ---------------------------------------------------------
-// COMPONENTE CREATIVO: Combo Sorpresa del Dia
-// Elige 2 platillos distintos al azar, calcula su precio con
-// 10% de descuento, evalua el nivel de picante combinado y
-// registra la "venta" incrementando las unidades vendidas.
-// ---------------------------------------------------------
 void comboSorpresa(string nombres[], float precios[], int picantes[],
-                    int vendidos[], int total) {
-    if (total < 2) {
+                    int vendidos[], int total) 
+                    {
+    if (total < 2) 
+    {
         cout << "Se necesitan al menos 2 platillos registrados para armar un combo.\n";
         return;
     }
 
     int i = rand() % total;
     int j;
-    do {
+    do 
+    {
         j = rand() % total;
-    } while (j == i); // asegura dos platillos distintos
+    } 
+    while (j == i);
 
     float precioSinDescuento = precios[i] + precios[j];
-    float precioCombo = precioSinDescuento * 0.90f; // 10% de descuento
+    float precioCombo = precioSinDescuento * 0.90f;
     float picantePromedio = (picantes[i] + picantes[j]) / 2.0f;
 
     cout << fixed << setprecision(2);
@@ -326,16 +330,19 @@ void comboSorpresa(string nombres[], float precios[], int picantes[],
     cout << "Precio combo  : $" << precioCombo << " (10% de descuento)\n";
     cout << "Picante combinado promedio: " << picantePromedio << "/5\n";
 
-    if (picantePromedio >= 4.0f) {
+    if (picantePromedio >= 4.0f) 
+    {
         cout << "Advertencia: Combo EXTREMO, solo para valientes!\n";
-    } else if (picantePromedio >= 2.0f) {
+    } 
+    else if (picantePromedio >= 2.0f) 
+    {
         cout << "Combo EQUILIBRADO, un buen punto medio de sabor.\n";
-    } else {
+    } 
+    else 
+    {
         cout << "Combo SUAVE, ideal para paladares sensibles.\n";
     }
 
-    // Esta es la parte que hace que el componente realice una
-    // operacion real: se registra la venta del combo.
     vendidos[i]++;
     vendidos[j]++;
     cout << "Venta del combo registrada. Las unidades vendidas de ambos "
