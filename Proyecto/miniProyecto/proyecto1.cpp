@@ -348,4 +348,3 @@ void comboSorpresa(string nombres[], float precios[], int picantes[],
     cout << "Venta del combo registrada. Las unidades vendidas de ambos "
             "platillos se actualizaron.\n";
 }
-
