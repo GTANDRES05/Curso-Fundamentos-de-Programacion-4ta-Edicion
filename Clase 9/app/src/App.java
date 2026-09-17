@@ -1,6 +1,6 @@
 /*
 Titulo: Ejercicio 3 - Encapsulamiento, getters, setters y validacion
-Autor: Jhonatan Torres
+Autor: Andrés Guachamín
 Fecha: 16 de septiembre 
 
 Enunciado: 
@@ -12,7 +12,7 @@ Enunciado:
 
 public class App {
     public static void main(String[] args) throws Exception {
-        CuentaBancaria cuenta1 = new CuentaBancaria("Jhonatan", 100.00);
+        CuentaBancaria cuenta1 = new CuentaBancaria("Andrés", 100.00);
 
         System.out.println("=== DATOS INICIALES ===");
         // consultamos el titular y el saldo usando los getters
