@@ -22,21 +22,30 @@ public class App {
             System.out.println("4. Salir");
             System.out.print("Seleccione una opción: ");
 
-            opcion = sc.nextInt();
-            sc.nextLine();
+            try {
+                opcion = sc.nextInt();
+                sc.nextLine();
 
-            switch (opcion) {
-                case 1:
-                    registrarPersonaje(sc, personajes);
-                    break;
-                case 2:
-                    mostrarPersonajes(personajes);
-                    break;
-                case 4:
-                    System.out.println("Saliendo del programa...");
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
+                switch (opcion) {
+                    case 1:
+                        registrarPersonaje(sc, personajes);
+                        break;
+                    case 2:
+                        mostrarPersonajes(personajes);
+                        break;
+                    case 3:
+                        buscarPersonaje(sc, personajes);
+                        break;
+                    case 4:
+                        System.out.println("Saliendo del programa...");
+                        break;
+                    default:
+                        System.out.println("Opción no válida.");
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Error: debe ingresar un número. Intente de nuevo.");
+                sc.nextLine();
+                opcion = 0;
             }
 
         } while (opcion != 4);
@@ -87,5 +96,21 @@ public class App {
             System.out.println(p.realizarAccion());
             System.out.println("-----------------------------");
         }
+    }
+
+        public static void buscarPersonaje(java.util.Scanner sc, java.util.ArrayList<Personaje> personajes) {
+        System.out.print("Ingrese el id a buscar: ");
+        int idBuscado = sc.nextInt();
+        sc.nextLine();
+
+        for (Personaje p : personajes) {
+            if (p.getId() == idBuscado) {
+                p.mostrarInfo();
+                System.out.println(p.realizarAccion());
+                return;
+            }
+        }
+
+        System.out.println("Personaje no encontrado");
     }
 }
