@@ -58,7 +58,8 @@ public class App {
         int tipo = sc.nextInt();
         sc.nextLine();
 
-        System.out.print("Ingrese id: ");
+        System.out.pr
+        int("Ingrese id: ");
         int id = sc.nextInt();
         sc.nextLine();
 

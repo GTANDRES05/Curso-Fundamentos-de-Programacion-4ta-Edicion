@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campo de flores amarillas</title>
+
+<style>
+
+/* =========================================================
+   BASE
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================================================
+   ESCENA
+========================================================= */
+
+.escena {
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #43b9ee 0%,
+            #86d7f2 42%,
+            #d9f2f0 61%,
+            #63ad4c 62%,
+            #347f32 100%
+        );
+}
+
+
+/* =========================================================
+   CIELO
+========================================================= */
+
+.cielo {
+    position: absolute;
+    inset: 0;
+
+    height: 66%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #42b8ed 0%,
+            #83d4f0 60%,
+            rgba(215,241,240,.4) 100%
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   SOL
+========================================================= */
+
+.sol {
+    position: absolute;
+
+    width: 105px;
+    height: 105px;
+
+    top: 8%;
+    right: 12%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fffde4 0%,
+            #fff19a 42%,
+            #ffdd59 75%,
+            #ffd13c 100%
+        );
+
+    box-shadow:
+        0 0 30px rgba(255,245,170,.95),
+        0 0 65px rgba(255,231,110,.65),
+        0 0 120px rgba(255,225,100,.35);
+
+    animation: sol 6s ease-in-out infinite;
+
+    z-index: 2;
+}
+
+@keyframes sol {
+
+    0%,100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.025);
+    }
+}
+
+
+/* =========================================================
+   NUBES
+========================================================= */
+
+.nube {
+    position: absolute;
+
+    width: 175px;
+    height: 43px;
+
+    background: rgba(255,255,255,.82);
+
+    border-radius: 50px;
+
+    filter: blur(1px);
+
+    z-index: 3;
+
+    animation: nubes linear infinite;
+}
+
+.nube::before,
+.nube::after {
+    content: "";
+
+    position: absolute;
+
+    background: rgba(255,255,255,.84);
+
+    border-radius: 50%;
+}
+
+.nube::before {
+    width: 70px;
+    height: 70px;
+
+    left: 25px;
+    bottom: 10px;
+}
+
+.nube::after {
+    width: 90px;
+    height: 90px;
+
+    right: 18px;
+    bottom: 5px;
+}
+
+.nube1 {
+    top: 16%;
+    left: -200px;
+
+    animation-duration: 70s;
+}
+
+.nube2 {
+    top: 29%;
+    left: -300px;
+
+    transform: scale(.6);
+
+    animation-duration: 95s;
+    animation-delay: -30s;
+}
+
+.nube3 {
+    top: 9%;
+    left: -300px;
+
+    transform: scale(.45);
+
+    animation-duration: 110s;
+    animation-delay: -70s;
+}
+
+@keyframes nubes {
+
+    from {
+        translate: 0 0;
+    }
+
+    to {
+        translate: 130vw 0;
+    }
+}
+
+
+/* =========================================================
+   CAMPO
+========================================================= */
+
+.campo {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 48%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #70bc53 0%,
+            #509e41 35%,
+            #398337 65%,
+            #23652d 100%
+        );
+
+    overflow: visible;
+
+    z-index: 10;
+}
+
+
+/*
+    Zona suave del horizonte.
+    Evita que parezca una línea artificial.
+*/
+
+.campo::before {
+    content: "";
+
+    position: absolute;
+
+    left: -5%;
+    top: -14%;
+
+    width: 110%;
+    height: 25%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(91,157,66,.05),
+            rgba(79,150,61,.55),
+            transparent
+        );
+
+    filter: blur(7px);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FLORES
+========================================================= */
+
+.flor {
+    position: absolute;
+
+    width: var(--tamano);
+    height: var(--altura);
+
+    left: var(--x);
+
+    /*
+        IMPORTANTE:
+        Las flores pueden subir por encima
+        del campo y entrar en el cielo.
+    */
+
+    bottom: var(--y);
+
+    transform-origin: bottom center;
+
+    opacity: 0;
+
+    z-index: var(--profundidad);
+
+    animation:
+        aparecer var(--aparicion) ease-out forwards,
+        viento var(--viento) ease-in-out infinite;
+
+    animation-delay:
+        var(--retraso),
+        calc(var(--retraso) + 2s);
+
+    filter:
+        blur(var(--blur));
+}
+
+
+/* =========================================================
+   TALLO
+========================================================= */
+
+.tallo {
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: var(--grosor);
+    height: 80%;
+
+    transform:
+        translateX(-50%)
+        rotate(var(--inclinacion));
+
+    transform-origin: bottom;
+
+    border-radius: 100%;
+
+    background:
+        linear-gradient(
+            to right,
+            #245e2d,
+            #4c943c,
+            #285f2d
+        );
+}
+
+
+/* =========================================================
+   HOJAS
+========================================================= */
+
+.hoja {
+    position: absolute;
+
+    width: 21px;
+    height: 9px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #326f32,
+            #5a9c40
+        );
+
+    border-radius: 100% 0 100% 0;
+}
+
+.hoja1 {
+    left: 10%;
+    bottom: 38%;
+
+    transform: rotate(-28deg);
+}
+
+.hoja2 {
+    right: 12%;
+    bottom: 51%;
+
+    transform: rotate(205deg);
+}
+
+
+/* =========================================================
+   CABEZA
+========================================================= */
+
+.cabeza {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 42px;
+    height: 42px;
+
+    transform:
+        translateX(-50%)
+        scale(var(--escala-flor));
+
+    filter:
+        drop-shadow(
+            0 2px 2px rgba(80,60,5,.2)
+        );
+
+    z-index: 5;
+}
+
+
+/* =========================================================
+   PÉTALOS
+   TODOS AMARILLOS
+========================================================= */
+
+.petalo {
+    position: absolute;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff16b 0%,
+            #ffd52d 48%,
+            #f1b91b 100%
+        );
+
+    box-shadow:
+        inset 1px 1px 2px rgba(255,255,190,.6),
+        inset -1px -2px 3px rgba(160,110,10,.15);
+}
+
+
+/* =========================================================
+   FLOR 1 — MARGARITA
+========================================================= */
+
+.margarita .petalo {
+
+    width: 12px;
+    height: 23px;
+
+    left: 15px;
+    top: 4px;
+
+    border-radius: 50%;
+
+    transform-origin: 6px 17px;
+}
+
+.margarita .petalo:nth-child(1) {
+    transform: rotate(0);
+}
+
+.margarita .petalo:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.margarita .petalo:nth-child(3) {
+    transform: rotate(90deg);
+}
+
+.margarita .petalo:nth-child(4) {
+    transform: rotate(135deg);
+}
+
+.margarita .petalo:nth-child(5) {
+    transform: rotate(180deg);
+}
+
+.margarita .petalo:nth-child(6) {
+    transform: rotate(225deg);
+}
+
+.margarita .petalo:nth-child(7) {
+    transform: rotate(270deg);
+}
+
+.margarita .petalo:nth-child(8) {
+    transform: rotate(315deg);
+}
+
+
+/* =========================================================
+   FLOR 2 — SILVESTRE
+========================================================= */
+
+.silvestre .petalo {
+
+    width: 15px;
+    height: 15px;
+
+    left: 13px;
+    top: 13px;
+
+    border-radius: 50%;
+}
+
+.silvestre .petalo:nth-child(1) {
+    transform: translateY(-10px);
+}
+
+.silvestre .petalo:nth-child(2) {
+    transform: translate(7px,-7px);
+}
+
+.silvestre .petalo:nth-child(3) {
+    transform: translateX(10px);
+}
+
+.silvestre .petalo:nth-child(4) {
+    transform: translate(7px,7px);
+}
+
+.silvestre .petalo:nth-child(5) {
+    transform: translateY(10px);
+}
+
+.silvestre .petalo:nth-child(6) {
+    transform: translate(-7px,7px);
+}
+
+.silvestre .petalo:nth-child(7) {
+    transform: translateX(-10px);
+}
+
+.silvestre .petalo:nth-child(8) {
+    transform: translate(-7px,-7px);
+}
+
+
+/* =========================================================
+   FLOR 3 — GRANDE
+========================================================= */
+
+.grande .petalo {
+
+    width: 16px;
+    height: 27px;
+
+    left: 13px;
+    top: 3px;
+
+    border-radius: 55%;
+
+    transform-origin: 8px 18px;
+}
+
+.grande .petalo:nth-child(1) {
+    transform: rotate(0);
+}
+
+.grande .petalo:nth-child(2) {
+    transform: rotate(45deg);
+}
+
+.grande .petalo:nth-child(3) {
+    transform: rotate(90deg);
+}
+
+.grande .petalo:nth-child(4) {
+    transform: rotate(135deg);
+}
+
+.grande .petalo:nth-child(5) {
+    transform: rotate(180deg);
+}
+
+.grande .petalo:nth-child(6) {
+    transform: rotate(225deg);
+}
+
+.grande .petalo:nth-child(7) {
+    transform: rotate(270deg);
+}
+
+.grande .petalo:nth-child(8) {
+    transform: rotate(315deg);
+}
+
+
+/* =========================================================
+   FLOR 4 — GIRASOL
+========================================================= */
+
+.girasol .petalo {
+
+    width: 17px;
+    height: 28px;
+
+    left: 12px;
+    top: 3px;
+
+    border-radius: 50%;
+
+    transform-origin: 8px 19px;
+}
+
+.girasol .petalo:nth-child(1) {
+    transform: rotate(0);
+}
+
+.girasol .petalo:nth-child(2) {
+    transform: rotate(30deg);
+}
+
+.girasol .petalo:nth-child(3) {
+    transform: rotate(60deg);
+}
+
+.girasol .petalo:nth-child(4) {
+    transform: rotate(90deg);
+}
+
+.girasol .petalo:nth-child(5) {
+    transform: rotate(120deg);
+}
+
+.girasol .petalo:nth-child(6) {
+    transform: rotate(150deg);
+}
+
+.girasol .petalo:nth-child(7) {
+    transform: rotate(180deg);
+}
+
+.girasol .petalo:nth-child(8) {
+    transform: rotate(210deg);
+}
+
+.girasol .petalo:nth-child(9) {
+    transform: rotate(240deg);
+}
+
+.girasol .petalo:nth-child(10) {
+    transform: rotate(270deg);
+}
+
+.girasol .petalo:nth-child(11) {
+    transform: rotate(300deg);
+}
+
+.girasol .petalo:nth-child(12) {
+    transform: rotate(330deg);
+}
+
+
+/* =========================================================
+   CENTRO
+========================================================= */
+
+.centro {
+    position: absolute;
+
+    width: 13px;
+    height: 13px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #dba027,
+            #986019 65%,
+            #613b11
+        );
+
+    z-index: 20;
+}
+
+
+/* =========================================================
+   APARICIÓN
+========================================================= */
+
+@keyframes aparecer {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(35px)
+            scale(.08);
+    }
+
+    65% {
+        opacity: 1;
+
+        transform:
+            translateY(-3px)
+            scale(1.07);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   VIENTO
+========================================================= */
+
+@keyframes viento {
+
+    0%,
+    100% {
+        margin-left: 0;
+        rotate:
+            calc(var(--inclinacion-viento) * -1);
+    }
+
+    50% {
+        margin-left: var(--movimiento);
+        rotate:
+            var(--inclinacion-viento);
+    }
+}
+
+
+/* =========================================================
+   HIERBA
+========================================================= */
+
+.hierba {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 2px;
+
+    background:
+        linear-gradient(
+            to top,
+            #245e2c,
+            #589943
+        );
+
+    border-radius: 100%;
+
+    transform-origin: bottom;
+
+    animation:
+        hierbaViento var(--velocidad) ease-in-out infinite;
+
+    opacity: var(--opacidad);
+
+    z-index: 15;
+}
+
+@keyframes hierbaViento {
+
+    0%,
+    100% {
+        transform:
+            rotate(calc(var(--angulo) * -1));
+    }
+
+    50% {
+        transform:
+            rotate(var(--angulo));
+    }
+}
+
+
+/* =========================================================
+   MARIPOSAS
+========================================================= */
+
+.mariposa {
+    position: absolute;
+
+    width: 34px;
+    height: 28px;
+
+    z-index: 200;
+
+    animation:
+        vuelo var(--vuelo) ease-in-out infinite;
+}
+
+.mariposa .ala {
+
+    position: absolute;
+
+    width: 17px;
+    height: 23px;
+
+    top: 1px;
+
+    background:
+        var(--color);
+
+    border-radius:
+        75% 25% 70% 30%;
+
+    box-shadow:
+        inset 2px 1px 2px rgba(255,255,255,.35);
+
+    animation:
+        aleteo .65s ease-in-out infinite;
+}
+
+.mariposa .ala.izquierda {
+    left: 0;
+}
+
+.mariposa .ala.derecha {
+    right: 0;
+    transform: scaleX(-1);
+}
+
+.mariposa .cuerpo {
+
+    position: absolute;
+
+    width: 4px;
+    height: 23px;
+
+    left: 15px;
+    top: 3px;
+
+    background:
+        linear-gradient(
+            to right,
+            #21170f,
+            #65472b,
+            #21170f
+        );
+
+    border-radius: 50%;
+
+    z-index: 10;
+}
+
+.mariposa .antena {
+
+    position: absolute;
+
+    width: 12px;
+    height: 7px;
+
+    left: 11px;
+    top: -3px;
+
+    border-top:
+        1px solid #382718;
+
+    border-radius: 50%;
+
+    z-index: 11;
+}
+
+@keyframes aleteo {
+
+    0%,
+    100% {
+        transform:
+            rotateY(0deg);
+    }
+
+    50% {
+        transform:
+            rotateY(65deg);
+    }
+}
+
+
+/* =========================================================
+   TRAYECTORIAS DE MARIPOSAS
+========================================================= */
+
+.vuelo1 {
+    animation-name: vuelo1;
+}
+
+.vuelo2 {
+    animation-name: vuelo2;
+}
+
+.vuelo3 {
+    animation-name: vuelo3;
+}
+
+.vuelo4 {
+    animation-name: vuelo4;
+}
+
+.vuelo5 {
+    animation-name: vuelo5;
+}
+
+.vuelo6 {
+    animation-name: vuelo6;
+}
+
+.vuelo7 {
+    animation-name: vuelo7;
+}
+
+
+@keyframes vuelo1 {
+
+    0%   { left:-5%; top:55%; }
+    25%  { left:20%; top:35%; }
+    50%  { left:42%; top:55%; }
+    75%  { left:70%; top:32%; }
+    100% { left:105%; top:48%; }
+}
+
+@keyframes vuelo2 {
+
+    0%   { left:105%; top:35%; }
+    25%  { left:75%; top:50%; }
+    50%  { left:50%; top:30%; }
+    75%  { left:25%; top:48%; }
+    100% { left:-5%; top:28%; }
+}
+
+@keyframes vuelo3 {
+
+    0%   { left:10%; top:25%; }
+    25%  { left:35%; top:42%; }
+    50%  { left:60%; top:27%; }
+    75%  { left:80%; top:45%; }
+    100% { left:105%; top:32%; }
+}
+
+@keyframes vuelo4 {
+
+    0%   { left:-5%; top:40%; }
+    30%  { left:30%; top:25%; }
+    60%  { left:55%; top:45%; }
+    100% { left:105%; top:25%; }
+}
+
+@keyframes vuelo5 {
+
+    0%   { left:105%; top:60%; }
+    25%  { left:80%; top:40%; }
+    50%  { left:55%; top:58%; }
+    75%  { left:25%; top:35%; }
+    100% { left:-5%; top:52%; }
+}
+
+@keyframes vuelo6 {
+
+    0%   { left:15%; top:55%; }
+    30%  { left:30%; top:30%; }
+    60%  { left:65%; top:40%; }
+    100% { left:95%; top:28%; }
+}
+
+@keyframes vuelo7 {
+
+    0%   { left:80%; top:50%; }
+    30%  { left:60%; top:25%; }
+    60%  { left:30%; top:40%; }
+    100% { left:-5%; top:30%; }
+}
+
+
+/* =========================================================
+   POLEN
+========================================================= */
+
+.polen {
+    position: absolute;
+
+    width: 2px;
+    height: 2px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,229,110,.8);
+
+    z-index: 180;
+
+    animation:
+        polen 8s linear infinite;
+}
+
+@keyframes polen {
+
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    20% {
+        opacity: .7;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(
+                var(--deriva),
+                -130px
+            );
+    }
+}
+
+
+/* =========================================================
+   MÓVIL
+========================================================= */
+
+@media(max-width:600px) {
+
+    .sol {
+        width: 70px;
+        height: 70px;
+    }
+
+    .flor {
+        transform-origin: bottom center;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="escena">
+
+    <!-- ==========================
+         CIELO
+    =========================== -->
+
+    <div class="cielo">
+
+        <div class="sol"></div>
+
+        <div class="nube nube1"></div>
+        <div class="nube nube2"></div>
+        <div class="nube nube3"></div>
+
+    </div>
+
+
+    <!-- ==========================
+         CAMPO
+    =========================== -->
+
+    <div class="campo" id="campo"></div>
+
+
+    <!-- ==========================
+         MARIPOSAS
+    =========================== -->
+
+    <div class="mariposa vuelo1"
+         style="--color:#f6c43d;--vuelo:18s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo2"
+         style="--color:#e878b4;--vuelo:22s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo3"
+         style="--color:#6b9ee8;--vuelo:20s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo4"
+         style="--color:#e99445;--vuelo:24s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo5"
+         style="--color:#a879df;--vuelo:19s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo6"
+         style="--color:#53c9a3;--vuelo:23s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+
+    <div class="mariposa vuelo7"
+         style="--color:#f08b6c;--vuelo:21s;">
+
+        <div class="ala izquierda"></div>
+        <div class="ala derecha"></div>
+        <div class="cuerpo"></div>
+        <div class="antena"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+const campo =
+    document.getElementById("campo");
+
+
+/*
+    Entre 300 y 400:
+    suficientemente lleno,
+    pero las flores todavía
+    se pueden distinguir.
+*/
+
+const cantidadFlores = 360;
+
+
+/*
+    Todos los tipos son amarillos.
+*/
+
+const tipos = [
+    "margarita",
+    "silvestre",
+    "grande",
+    "girasol"
+];
+
+
+/* =========================================================
+   CREAR FLORES
+========================================================= */
+
+for (
+    let i = 0;
+    i < cantidadFlores;
+    i++
+) {
+
+    const flor =
+        document.createElement("div");
+
+
+    /*
+        Tipo de flor
+    */
+
+    const tipo =
+        tipos[
+            Math.floor(
+                Math.random() *
+                tipos.length
+            )
+        ];
+
+
+    flor.className =
+        `flor ${tipo}`;
+
+
+    /*
+        Posición horizontal
+    */
+
+    const x =
+        Math.random() * 100;
+
+
+    /*
+        Distribución vertical.
+
+        Las flores se concentran
+        en todo el campo, pero
+        algunas suben por encima
+        del horizonte.
+    */
+
+    const profundidad =
+        Math.random();
+
+
+    let y =
+        Math.pow(
+            profundidad,
+            1.5
+        ) * 82;
+
+
+    /*
+        Algunas flores especiales
+        aparecen directamente en
+        el horizonte/cielo.
+    */
+
+    if (i < 55) {
+
+        y =
+            70 +
+            Math.random() * 24;
+
+    }
+
+
+    /*
+        Tamaño.
+
+        Las flores cercanas
+        son más grandes.
+    */
+
+    const escala =
+        .38 +
+        profundidad * .72 +
+        Math.random() * .18;
+
+
+    /*
+        Altura
+    */
+
+    const altura =
+        65 +
+        profundidad * 85 +
+        Math.random() * 25;
+
+
+    /*
+        Retraso.
+
+        Las flores aparecen
+        durante unos 25 segundos.
+    */
+
+    const retraso =
+        1 +
+        (i / cantidadFlores) * 23 +
+        Math.random() * 5;
+
+
+    /*
+        Desenfoque.
+
+        Las flores lejanas
+        tienen menos definición.
+    */
+
+    const blur =
+        Math.max(
+            0,
+            (.25 - profundidad) * 2
+        );
+
+
+    /*
+        Movimiento individual
+    */
+
+    const movimiento =
+        1 +
+        Math.random() * 4;
+
+
+    const inclinacion =
+        1 +
+        Math.random() * 3;
+
+
+    /*
+        Tallo
+    */
+
+    const grosor =
+        .8 +
+        Math.random() * 1.5;
+
+
+    const inclinacionPlanta =
+        -4 +
+        Math.random() * 8;
+
+
+    /*
+        Variables CSS
+    */
+
+    flor.style.setProperty(
+        "--x",
+        `${x}%`
+    );
+
+    flor.style.setProperty(
+        "--y",
+        `${y}%`
+    );
+
+    flor.style.setProperty(
+        "--tamano",
+        `${25 + profundidad * 25}px`
+    );
+
+    flor.style.setProperty(
+        "--altura",
+        `${altura}px`
+    );
+
+    flor.style.setProperty(
+        "--escala-flor",
+        escala
+    );
+
+    flor.style.setProperty(
+        "--grosor",
+        `${grosor}px`
+    );
+
+    flor.style.setProperty(
+        "--inclinacion",
+        `${inclinacionPlanta}deg`
+    );
+
+    flor.style.setProperty(
+        "--blur",
+        `${blur}px`
+    );
+
+    flor.style.setProperty(
+        "--retraso",
+        `${retraso}s`
+    );
+
+    flor.style.setProperty(
+        "--aparicion",
+        `${1.7 + Math.random() * 1.5}s`
+    );
+
+    flor.style.setProperty(
+        "--viento",
+        `${3.5 + Math.random() * 2.5}s`
+    );
+
+    flor.style.setProperty(
+        "--movimiento",
+        `${movimiento}px`
+    );
+
+    flor.style.setProperty(
+        "--inclinacion-viento",
+        `${inclinacion}deg`
+    );
+
+
+    /*
+        Profundidad
+    */
+
+    flor.style.zIndex =
+        Math.floor(
+            20 +
+            profundidad * 100
+        );
+
+
+    /*
+        Crear estructura
+    */
+
+    flor.innerHTML = `
+
+        <div class="cabeza">
+
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+            <div class="petalo"></div>
+
+            <div class="centro"></div>
+
+        </div>
+
+        <div class="tallo"></div>
+
+        <div class="hoja hoja1"></div>
+        <div class="hoja hoja2"></div>
+
+    `;
+
+
+    campo.appendChild(flor);
+}
+
+
+/* =========================================================
+   HIERBA
+========================================================= */
+
+for (
+    let i = 0;
+    i < 500;
+    i++
+) {
+
+    const hierba =
+        document.createElement("div");
+
+
+    hierba.className =
+        "hierba";
+
+
+    const profundidad =
+        Math.random();
+
+
+    hierba.style.left =
+        Math.random() * 100 +
+        "%";
+
+
+    hierba.style.bottom =
+        Math.random() * 95 +
+        "%";
+
+
+    hierba.style.height =
+        7 +
+        profundidad * 25 +
+        Math.random() * 16 +
+        "px";
+
+
+    hierba.style.width =
+        .7 +
+        Math.random() * 1.5 +
+        "px";
+
+
+    hierba.style.setProperty(
+        "--angulo",
+        `${2 + Math.random() * 6}deg`
+    );
+
+
+    hierba.style.setProperty(
+        "--velocidad",
+        `${2.5 + Math.random() * 2.5}s`
+    );
+
+
+    hierba.style.setProperty(
+        "--opacidad",
+        .25 +
+        Math.random() * .55
+    );
+
+
+    hierba.style.animationDelay =
+        `${Math.random() * 4}s`;
+
+
+    campo.appendChild(
+        hierba
+    );
+}
+
+
+/* =========================================================
+   POLEN
+========================================================= */
+
+for (
+    let i = 0;
+    i < 30;
+    i++
+) {
+
+    const polen =
+        document.createElement("div");
+
+
+    polen.className =
+        "polen";
+
+
+    polen.style.left =
+        Math.random() * 100 +
+        "%";
+
+
+    polen.style.bottom =
+        Math.random() * 55 +
+        "%";
+
+
+    polen.style.setProperty(
+        "--deriva",
+        `${-40 + Math.random() * 80}px`
+    );
+
+
+    polen.style.animationDelay =
+        `${Math.random() * 8}s`;
+
+
+    campo.appendChild(
+        polen
+    );
+}
+
+</script>
+
+</body>
+</html>
