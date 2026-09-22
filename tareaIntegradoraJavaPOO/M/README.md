@@ -1,18 +1,29 @@
-## Getting Started
+# Sistema de Gestión — Refugio de Animales
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+**Autor:** Andrés Guachamín
+**Curso:** Bootcamp Programación Cero a POO — Torres Academy
+**Tarea:** Tarea integradora — Java POO
 
-## Folder Structure
+## Descripción
+Aplicación de consola en Java que permite registrar perros y gatos en un refugio,
+consultar los animales almacenados, buscarlos por ID y gestionar su adopción.
+El proyecto aplica clases, objetos, encapsulamiento, herencia, polimorfismo,
+colecciones con `ArrayList` y manejo básico de excepciones.
 
-The workspace contains two folders by default, where:
+## Clases
+- **Animal**: clase padre con los datos comunes (id, nombre, edad, estado).
+- **Perro**: hereda de Animal, agrega el atributo `raza`.
+- **Gato**: hereda de Animal, agrega el atributo `color`.
+- **Refugio**: administra la colección `ArrayList<Animal>` (registrar, buscar, mostrar, adoptar).
+- **Main**: contiene el `Scanner` y el menú; coordina la interacción con el usuario.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Funcionalidades
+1. Registrar animal (perro o gato), con validación de ID, nombre y edad.
+2. Mostrar todos los animales registrados (evidencia el polimorfismo con `realizarAccion()`).
+3. Buscar un animal por ID (búsqueda secuencial).
+4. Adoptar un animal (cambia su estado de `DISPONIBLE` a `ADOPTADO`).
+5. Salir del programa.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Instrucciones de ejecución
+1. Clonar el repositorio.
+2. Compilar todos los archivos:
